@@ -87,9 +87,9 @@ async function publish(options) {
         'owner': owner,
         'repo': repo,
         'tag_name': metadata.version,
-        'target_commitish': 'master',
+        'target_commitish': 'main',
         'name': 'v' + metadata.version,
-        'body': `$[metadata.name} ${metadata.version}`,
+        'body': `${metadata.name} ${metadata.version}`,
         'draft': !!options.draft,
         'prerelease': false
       });
@@ -113,6 +113,11 @@ async function publish(options) {
           log("Staged file " + file + " found but it already exists in release " + release.tag_name + ". If you would like to replace it, you must first manually delete it within GitHub.");
           return;
         }
+      }
+
+      if(file === '.DS_Store') {
+        log("Staged file" + file + " found but ignore it.");
+        return;
       }
 
       const fileName    = file
